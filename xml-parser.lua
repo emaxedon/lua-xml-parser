@@ -29,11 +29,9 @@ function xml.parse(value)
 		else
 			i = j + 1
 
-			attributes = parseAttributes(attributes)
-
 			return {
 				name = name,
-				attributes = attributes,
+				attributes = parseAttributes(attributes),
 				empty = (empty == '/')
 			}
 		end
