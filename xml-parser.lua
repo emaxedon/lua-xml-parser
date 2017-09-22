@@ -9,6 +9,16 @@ xml = {}
 function xml.parse(value)
 	local i = 1
 
+	function parseAttributes(value)
+		local attributes = {}
+
+		string.gsub(value, '(%w+)=(["\'])(.-)%2', function(n, _, v)
+			attributes[n] = v
+		end)
+
+		return attributes
+	end
+
 	function parseStartTag()
 		local ni, j, c, name, attributes, empty = string.find(value, '<(/?)([%w_:]+)(.-)(/?)>', i)
 
@@ -19,8 +29,11 @@ function xml.parse(value)
 		else
 			i = j + 1
 
+			attributes = parseAttributes(attributes)
+
 			return {
 				name = name,
+				attributes = attributes,
 				empty = (empty == '/')
 			}
 		end
@@ -63,6 +76,7 @@ function xml.parse(value)
 			if startTag.name == endTag then
 				return {
 					name = startTag.name,
+					attributes = startTag.attributes,
 					children = children
 				}
 			else
