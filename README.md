@@ -2,7 +2,7 @@
 
 ## Installation
 
-Copy the `xml-parser.lua` file to your project root directory, then import the module.
+Copy the `xml-parser.lua` file to your project's root directory, then import the module.
 
 `local xml = require('xml-parser.lua')`
 
@@ -26,3 +26,7 @@ print(xmlTable.children[1].name)
 print(xmlTable.children[2].attributes['ID'])
 -- Result: 101
 ```
+
+## License
+
+Lua XML Parser is distributed under the MIT License, meaning that you are free to use it in your free or proprietary software.
