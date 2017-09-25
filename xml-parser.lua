@@ -73,9 +73,7 @@ function xml.parse(value)
 
 			if startTag.name == endTag then
 				local find = function (self, name)
-					if not self.children then
-						return nil
-					elseif #self.children == 0 then
+					if not self.children or #self.children == 0 then
 						return nil
 					end
 
