@@ -76,6 +76,8 @@ function xml.parse(value)
 					for i, v in ipairs(children) do
 						if v.name == name then
 							return children[i]
+						elseif i == #children then
+							return nil
 						end
 					end
 				end
