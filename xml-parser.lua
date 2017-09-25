@@ -72,10 +72,19 @@ function xml.parse(value)
 			local endTag = parseEndTag()
 
 			if startTag.name == endTag then
+				local find = function (name)
+					for i, v in ipairs(children) do
+						if v.name == name then
+							return children[i]
+						end
+					end
+				end
+
 				return {
 					name = startTag.name,
 					attributes = startTag.attributes,
-					children = children
+					children = children,
+					find = find
 				}
 			else
 				error(string.format('mismatched start and end tags: %s, %s', startTag.name, endTag))

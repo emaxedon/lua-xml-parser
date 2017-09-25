@@ -21,10 +21,13 @@ local xmlString = [[
 local xmlTable = xml.parse(xmlString)
 
 print(xmlTable.children[1].name)
--- Result: Foo
+-- Output: Foo
 
 print(xmlTable.children[2].attributes['ID'])
--- Result: 101
+-- Output: 101
+
+print(xmlTable.find('Bar').attributes['ID'])
+-- Output: 101
 ```
 
 ## License
