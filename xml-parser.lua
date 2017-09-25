@@ -72,11 +72,11 @@ function xml.parse(value)
 			local endTag = parseEndTag()
 
 			if startTag.name == endTag then
-				local find = function (name)
-					for i, v in ipairs(children) do
+				local find = function (self, name)
+					for i, v in ipairs(self.children) do
 						if v.name == name then
-							return children[i]
-						elseif i == #children then
+							return self.children[i]
+						elseif i == #self.children then
 							return nil
 						end
 					end

@@ -26,7 +26,7 @@ print(xmlTable.children[1].name)
 print(xmlTable.children[2].attributes['ID'])
 -- Output: 101
 
-print(xmlTable.find('Bar').attributes['ID'])
+print(xmlTable:find('Bar').attributes['ID'])
 -- Output: 101
 ```
 
