@@ -104,19 +104,30 @@ function xml.parse(value)
 	return parseElement()
 end
 
+local function encodeXMLEntities(value)
+	value = string.gsub(value, '&', '&amp;')
+	value = string.gsub(value, '<', '&lt;')
+	value = string.gsub(value, '>', '&gt;')
+	value = string.gsub(value, '"', '&quot;')
+	value = string.gsub(value, '([^%w%&%;%p%\t% ])', function(c)
+		return string.format('&#x%X;', string.byte(c))
+	end)
+	return value
+end
+
 local function decodeXMLEntities(value)
 	value = string.gsub(value, '&#x([%x]+)%;', function(h)
 		return string.char(tonumber(h, 16))
-	end);
+	end)
 	value = string.gsub(value, '&#([0-9]+)%;', function(h)
 		return string.char(tonumber(h, 10))
-	end);
-	value = string.gsub(value, '&quot;', '"');
-	value = string.gsub(value, '&apos;', '\'');
-	value = string.gsub(value, '&gt;', '>');
-	value = string.gsub(value, '&lt;', '<');
-	value = string.gsub(value, '&amp;', '&');
-	return value;
+	end)
+	value = string.gsub(value, '&quot;', '"')
+	value = string.gsub(value, '&apos;', '\'')
+	value = string.gsub(value, '&gt;', '>')
+	value = string.gsub(value, '&lt;', '<')
+	value = string.gsub(value, '&amp;', '&')
+	return value
 end
 
 --[[
