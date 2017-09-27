@@ -7,6 +7,7 @@ local value = [[
 		<Bar>
 			<NS:Foo ID="2"></NS:Foo>
 		</Bar>
+		<Empty/>
 	</Envelop>
 ]]
 
@@ -25,5 +26,13 @@ assert(xmlValue.children[2].children[1].name == 'NS:Foo', 'oops, something went 
 assert(xmlValue.children[2].children[1].attributes['ID'] == '2', 'oops, something went wrong.')
 
 assert(xmlValue:find('Bar'):find('NS:Foo').attributes['ID'] == '2', 'oops, something went wrong.')
+
+assert(xml.prettyPrint(xmlValue) == [[<Envelop>
+    <Foo></Foo>
+    <Bar>
+        <NS:Foo></NS:Foo>
+    </Bar>
+    <Empty/>
+</Envelop>]], 'oops, something went wrong.')
 
 print('Tests passed.')

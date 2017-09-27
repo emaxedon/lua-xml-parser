@@ -21,13 +21,19 @@ local xmlString = [[
 local xmlTable = xml.parse(xmlString)
 
 print(xmlTable.children[1].name)
--- Output: Foo
-
-print(xmlTable.children[2].attributes['ID'])
--- Output: 101
+-- Output:
+-- Foo
 
 print(xmlTable:find('Bar').attributes['ID'])
--- Output: 101
+-- Output:
+-- 101
+
+print(xml.prettyPrint(xmlTable))
+-- Output:
+-- <Envelop>
+--     <Foo></Foo>
+--     <Bar ID="101"></Bar>
+-- </Evenlop>
 ```
 
 ## License

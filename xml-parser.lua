@@ -6,6 +6,9 @@
 
 xml = {}
 
+--[[
+	Parses XML text into a table.
+]]
 function xml.parse(value)
 	local i = 1
 
@@ -99,6 +102,43 @@ function xml.parse(value)
 	end
 
 	return parseElement()
+end
+
+--[[
+	Takes an XML table and returns a decoded pretty string.
+]]
+function xml.prettyPrint(value)
+	local result = string.format('<%s>\n', value.name)
+
+	function printChildren(children, depth)
+		if not children or #children == 0 then
+			return nil
+		end
+
+		local spaces = string.rep('    ', depth)
+
+		for k, v in pairs(children) do
+			if not v.empty then
+				if not v.children or #v.children == 0 then
+					result = result .. string.format('%s<%s></%s>\n', spaces, v.name, v.name)
+				else
+					result = result .. string.format('%s<%s>\n', spaces, v.name)
+
+					printChildren(v.children, depth + 1)
+
+					result = result .. string.format('%s</%s>\n', spaces, v.name)
+				end
+			else
+				result = result .. string.format('%s<%s/>\n', spaces, v.name)
+			end
+		end
+	end
+
+	printChildren(value.children, 1)
+
+	result = result .. string.format('</%s>', value.name)
+
+	return result
 end
 
 return xml
