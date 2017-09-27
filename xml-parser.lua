@@ -104,11 +104,36 @@ function xml.parse(value)
 	return parseElement()
 end
 
+local function decodeXMLEntities(value)
+	value = string.gsub(value, '&#x([%x]+)%;', function(h)
+		return string.char(tonumber(h, 16))
+	end);
+	value = string.gsub(value, '&#([0-9]+)%;', function(h)
+		return string.char(tonumber(h, 10))
+	end);
+	value = string.gsub(value, '&quot;', '"');
+	value = string.gsub(value, '&apos;', '\'');
+	value = string.gsub(value, '&gt;', '>');
+	value = string.gsub(value, '&lt;', '<');
+	value = string.gsub(value, '&amp;', '&');
+	return value;
+end
+
 --[[
 	Takes an XML table and returns a decoded pretty string.
 ]]
 function xml.prettyPrint(value)
-	local result = string.format('<%s>\n', value.name)
+	function printAttributes(attributes)
+		local result = ''
+
+		for k, v in pairs(attributes) do
+			result = result .. string.format(' %s="%s"', k, decodeXMLEntities(v))
+		end
+
+		return result
+	end
+
+	local result = string.format('<%s%s>\n', value.name, printAttributes(value.attributes))
 
 	function printChildren(children, depth)
 		if not children or #children == 0 then
@@ -118,18 +143,20 @@ function xml.prettyPrint(value)
 		local spaces = string.rep('    ', depth)
 
 		for k, v in pairs(children) do
+			local decodedAttributes = printAttributes(v.attributes)
+
 			if not v.empty then
 				if not v.children or #v.children == 0 then
-					result = result .. string.format('%s<%s></%s>\n', spaces, v.name, v.name)
+					result = result .. string.format('%s<%s%s></%s>\n', spaces, v.name, decodedAttributes, v.name)
 				else
-					result = result .. string.format('%s<%s>\n', spaces, v.name)
+					result = result .. string.format('%s<%s%s>\n', spaces, v.name, decodedAttributes)
 
 					printChildren(v.children, depth + 1)
 
 					result = result .. string.format('%s</%s>\n', spaces, v.name)
 				end
 			else
-				result = result .. string.format('%s<%s/>\n', spaces, v.name)
+				result = result .. string.format('%s<%s%s/>\n', spaces, v.name, decodedAttributes)
 			end
 		end
 	end

@@ -27,10 +27,10 @@ assert(xmlValue.children[2].children[1].attributes['ID'] == '2', 'oops, somethin
 
 assert(xmlValue:find('Bar'):find('NS:Foo').attributes['ID'] == '2', 'oops, something went wrong.')
 
-assert(xml.prettyPrint(xmlValue) == [[<Envelop>
+assert(xml.prettyPrint(xmlValue) == [[<Envelop ID="1">
     <Foo></Foo>
     <Bar>
-        <NS:Foo></NS:Foo>
+        <NS:Foo ID="2"></NS:Foo>
     </Bar>
     <Empty/>
 </Envelop>]], 'oops, something went wrong.')
